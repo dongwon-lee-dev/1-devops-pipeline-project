@@ -56,7 +56,9 @@ sudo chmod 666 /var/run/docker.sock
 
 docker run -d --restart=always --name sonar -p 9000:9000 sonarqube:lts-community
 ```
-SonarQube default id/password are admin/admin
+| Default ID | Default Password | 
+|---------|----------|
+| admin | admin  |  
 
 ### 5. Run script on Nexus (Port 8081) instance
 ```bash
