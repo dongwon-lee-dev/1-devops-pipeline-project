@@ -196,8 +196,6 @@ To get the Master's Token again
 kubeadm token create --print-join-command
 ```
 ### 7. Run script on Jenkins (Port 8080) instance
-
-#!/bin/bash
 ```bash
 # Install OpenJDK 17 JRE Headless
 sudo apt install openjdk-17-jre-headless -y
