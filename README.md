@@ -283,11 +283,11 @@ Manage Jenkins - Tools - JDK installations: jdk17 install automatically, adoptiu
     <td>Docker hub username and password</td>
   </tr>
   <tr>
-    <td>k8-cred</td>
+    <td>k8-cred (Secret text)</td>
     <td>kubectl describe secret mysecretname -n webapps</td>
   </tr>
     <tr>
-    <td>mail-cred</td>
+    <td>mail-cred (Username with password)</td>
     <td>Gmail App Password</td>
   </tr>
 </table>
