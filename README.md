@@ -104,12 +104,12 @@ sudo su
 Create and run the kube-install.sh file
 
 ```bash
-sudo apt-get update
+sudo apt update
 
 sudo apt install docker.io -y
 sudo chmod 666 /var/run/docker.sock
 
-sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
+sudo apt install -y apt-transport-https ca-certificates curl gnupg
 sudo mkdir -p -m 755 /etc/apt/keyrings
 
 curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
@@ -149,12 +149,12 @@ sudo su
 Create and run the kube-install.sh file
 
 ```bash
-sudo apt-get update
+sudo apt update
 
 sudo apt install docker.io -y
 sudo chmod 666 /var/run/docker.sock
 
-sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
+sudo apt install apt-transport-https ca-certificates curl gnupg -y
 sudo mkdir -p -m 755 /etc/apt/keyrings
 
 curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
