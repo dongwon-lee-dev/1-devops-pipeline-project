@@ -122,7 +122,29 @@ sudo apt install -y kubeadm=1.28.1-1.1 kubelet=1.28.1-1.1 kubectl=1.28.1-1.1
 
 ```bash
 sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+
+# Copy the output command for worker nodes to join the cluster
+kubeadm join 172.31.94.179:6443 --token w0gcqq.ipyxo3aa0t180qqa \
+        --discovery-token-ca-cert-hash sha256:b81378544d03994815d38b40bd254087307fda9d6774787676102e6880861cb3
 ```
+
+### When getting the connection refused error when doing 'kubectl get node' such as
+```bash
+E1017 13:08:17.023750    4693 memcache.go:265] couldn't get current server API group list: Get "http://localhost:8080/api?timeout=32s": dial tcp 127.0.0.1:8080: connect: connection refused
+```
+Do the following.
+
+```bash
+/usr/bin/containerd config default > /etc/containerd/config.toml  
+
+vi /etc/containerd/config.toml 
+SystemdCgroup = true   # Change from false to true
+
+sudo systemctl restart containerd.service
+```
+Check if the error is solved.
+
+Next
 
 ```bash
 kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
@@ -178,13 +200,20 @@ kubeadm token create --print-join-command
 
 
 ### 8. Troubleshooting Kubernetes Connection Refused Error
+When getting the connection refused error such as
+```bash
+E1017 13:08:17.023750    4693 memcache.go:265] couldn't get current server API group list: Get "http://localhost:8080/api?timeout=32s": dial tcp 127.0.0.1:8080: connect: connection refused
+```
+Do the following.
+
+```bash
 /usr/bin/containerd config default > /etc/containerd/config.toml  
 
 vi /etc/containerd/config.toml 
-SystemdCgroup = true 
+SystemdCgroup = true   # Change from false to true
 
 sudo systemctl restart containerd.service
-
+```
 
 
 # <span style="background-color: cyan;">2)Jenkins Pipeline</span>
