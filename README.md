@@ -83,10 +83,11 @@ sudo chmod 666 /var/run/docker.sock
 
 docker run -d --restart=always --name Nexus -p 8081:8081 sonatype/nexus3
 ```
+| Default ID | Default Password | 
+|---------|----------|
+| admin | [/nexus-data/admin.password] |  
 
-*** Wipe the Nexus releases, snapshots repository after each deployment
-
-### 6. Find the default password on your Nexus (Port 8081) instance
+### Find the default password on Nexus docker container
 ```bash
 # Find Container ID
 docker ps -a
@@ -94,7 +95,9 @@ docker ps -a
 docker exec -it [Container ID] /bin/bash
 ```
 
-### 7. Kubernetes Master Configuration
+*** Wipe the Nexus releases, snapshots repository after each deployment
+
+### 6. Kubernetes Master Configuration
 ```bash
 sudo su
 ```
@@ -139,7 +142,7 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 export KUBECONFIG=/etc/kubernetes/admin.conf  
 
-### 8. Setting up Kubernetes workers
+### 7. Setting up Kubernetes workers
 ```bash
 sudo su
 ```
