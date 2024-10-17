@@ -271,16 +271,20 @@ Manage Jenkins - Tools - JDK installations: jdk17 install automatically, adoptiu
     <td>eclipse temurin installer</td>
   </tr>
   <tr>
-    <td>sonar-cred</td>
-    <td>config file provider, maven integration, pipeline maven integration</td>
+    <td>sonar-cred (Secret text)</td>
+    <td>SonarQube - Administration - Configuration - Users - Tokens</td>
   </tr>
   <tr>
-    <td>docker-cred</td>
-    <td>sonarqube scanner </td>
+    <td>github-cred (Username with password)</td>
+    <td>Github username and token</td>
   </tr>
-    <tr>
+  <tr>
+    <td>docker-cred (Username with password)</td>
+    <td>Docker hub username and password</td>
+  </tr>
+  <tr>
     <td>k8-cred</td>
-    <td>Docker, Docker Pipeline</td>
+    <td>kubectl describe secret mysecretname -n webapps</td>
   </tr>
     <tr>
     <td>mail-cred</td>
@@ -298,14 +302,90 @@ Refer to jenkins.md file
 4. File System Scan (Trivy)
 5. SonarQube Analysis (SonarQube)
 6. Quality Gate (SonarQube)
-7. Build (Maven)
-8. Publish To Nexus (Nexus)
-9. Build & Tag Docker Image (Docker)
-10. Docker Image Scan (Docker)
-11. Push Docker Image (Docker)
-12. Deploy To Kubernetes (Kubernetes)
-13. Verify the Deployment (Kubernetes)
-14. Send Email (Gmail)
+  - SonarQube - Administration - Configuration - Webhooks - Name: jenkins / URL: [Jenkins URL]/sonarqube-webhook/
+8. Build (Maven)
+9. Publish To Nexus (Nexus)
+  - Nexus maven-releases URL -> Boardgame/pom.xml
+  - Jenkins - Managed files - Add a new Config - Global Maven settins.xml / ID: global-settings - <server> - maven-releases / maven-snapshots
+10. Build & Tag Docker Image (Docker)
+11. Docker Image Scan (Docker)
+12. Push Docker Image (Docker)
+13. Deploy To Kubernetes (Kubernetes)
+    - Create Service Account, Role, Binding in Kubernetes Cluster
+    - Create Secret in Kubernetes Cluster webapps namespace (kubectl apply -f secret.yaml -n webapps)
+```bash
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: jenkins
+  namespace: webapps
+```
+```bash
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: app-role
+  namespace: webapps
+rules:
+  - apiGroups:
+        - ""
+        - apps
+        - autoscaling
+        - batch
+        - extensions
+        - policy
+        - rbac.authorization.k8s.io
+    resources:
+      - pods
+      - secrets
+      - componentstatuses
+      - configmaps
+      - daemonsets
+      - deployments
+      - events
+      - endpoints
+      - horizontalpodautoscalers
+      - ingress
+      - jobs
+      - limitranges
+      - namespaces
+      - nodes
+      - pods
+      - persistentvolumes
+      - persistentvolumeclaims
+      - resourcequotas
+      - replicasets
+      - replicationcontrollers
+      - serviceaccounts
+      - services
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+```
+```bash
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: app-rolebinding
+  namespace: webapps 
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: app-role 
+subjects:
+- namespace: webapps 
+  kind: ServiceAccount
+  name: jenkins 
+```
+```bash
+apiVersion: v1
+kind: Secret
+type: kubernetes.io/service-account-token
+metadata:
+  name: mysecretname
+  annotations:
+    kubernetes.io/service-account.name: jenkins
+```
+14. Verify the Deployment (Kubernetes)
+15. Send Email (Gmail)
 
 
 # <span style="background-color: cyan;">3)Monitoring</span>
