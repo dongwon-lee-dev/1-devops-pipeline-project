@@ -229,7 +229,7 @@ sudo apt install trivy -y
 
 # <span style="background-color: cyan;">2) Jenkins Pipeline</span>
 
-Empty Project
+Pipeline
 
 ## 1. Install Jenkins plugins
 <table>
