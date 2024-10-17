@@ -296,7 +296,7 @@ Manage Jenkins - Tools - JDK installations: jdk17 install automatically, adoptiu
 
 Refer to jenkins.md file
 
-1. Git Checkout (GitHub)
+1. Git Pull (GitHub)
 2. Compile (Maven)
 3. Test (Maven)
 4. File System Scan (Trivy)
