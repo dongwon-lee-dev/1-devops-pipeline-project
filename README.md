@@ -85,14 +85,14 @@ docker run -d --restart=always --name Nexus -p 8081:8081 sonatype/nexus3
 ```
 | Default ID | Default Password | 
 |---------|----------|
-| admin | [/nexus-data/admin.password] |  
+| admin | [ /nexus-data/admin.password ] |  
 
-### Find the default password on Nexus docker container
 ```bash
 # Find Container ID
 docker ps -a
 
 docker exec -it [Container ID] /bin/bash
+cat /nexus-data/admin.password
 ```
 
 *** Wipe the Nexus releases, snapshots repository after each deployment
