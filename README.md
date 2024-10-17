@@ -195,10 +195,39 @@ To get the Master's Token again
 ```bash
 kubeadm token create --print-join-command
 ```
+### 7. Run script on Jenkins (Port 8080) instance
 
+#!/bin/bash
+```bash
+# Install OpenJDK 17 JRE Headless
+sudo apt install openjdk-17-jre-headless -y
 
+# Download Jenkins GPG key
+sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
+  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
 
-# <span style="background-color: cyan;">2)Jenkins Pipeline</span>
+# Add Jenkins repository to package manager sources
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+# Update package manager repositories
+sudo apt update
+
+# Install Jenkins
+sudo apt install jenkins -y
+```
+
+Install Trivy
+```bash
+sudo apt-get install wget apt-transport-https gnupg lsb-release
+wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
+sudo apt-get update
+sudo apt-get install trivy
+```
+
+# <span style="background-color: cyan;">2) Jenkins Pipeline</span>
 
 Empty Project
 
