@@ -8,7 +8,7 @@ pipeline {
     }
     
     environment {
-        SCANNER_HOME= tool "sonar-scanner"
+        SCANNER_HOME= tool "sonarqube-scanner"
     }
 
     stages {
@@ -38,7 +38,7 @@ pipeline {
         
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('sonar') {
+                withSonarQubeEnv('sonarqube') {
                     sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=BoardGame -Dsonar.projectKey=BoardGame \
                     -Dsonar.java.binaries=. '''
                 }
@@ -48,7 +48,7 @@ pipeline {
         stage('Quality Gate') {
             steps {
                 script {
-                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-cred'
                 }
             }
         }
