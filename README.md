@@ -196,6 +196,8 @@ To get the Master's Token again
 kubeadm token create --print-join-command
 ```
 ### 7. Run script on Jenkins (Port 8080) instance
+
+#!/bin/bash
 ```bash
 # Install OpenJDK 17 JRE Headless
 sudo apt install openjdk-17-jre-headless -y
@@ -257,7 +259,12 @@ Pipeline
 </table>
 
 ## 2. Jenkins System Configuration
-Manage Jenkins - Tools - JDK installations: jdk17 install automatically, adoptium.net - jdk-17.0.9+9 / sonar / maven / docker
+Manage Jenkins - Tools - JDK / Maven / SonarQube / Docker
+![Sample](./images/tools/jdk.png)
+![Sample](./images/tools/maven.png)
+![Sample](./images/tools/sonar.png)
+![Sample](./images/tools/docker.png)
+
 
 ## 2. Setting up Jenkins Credentials
 <table>
@@ -299,12 +306,17 @@ Refer to jenkins.md file
 3. Test (Maven)
 4. File System Scan (Trivy)
 5. SonarQube Analysis (SonarQube)
+    1. **Get SonarQube Token**: SonarQube - Administration - Security - Users - Administrator Token - Generate Tokens
+    2. **Create Jenkins SonarQube Credential**: Jenkins Credentials - create sonar-cred (Secret text) with the token
+    3. **Set up Jenkins SonarQube System**: Jenkins System - SonarQube installations - sonarqube / server url / sonar-cred
+    4. **Register 3rd party tool in pipeline**: environment { }
 6. Quality Gate (SonarQube)
-  - SonarQube - Administration - Configuration - Webhooks - Name: jenkins / URL: [Jenkins URL]/sonarqube-webhook/
+    1. **Register Webhook on SonarQube**: SonarQube - Administration - Configuration - Webhooks - Name: jenkins, URL: [Jenkins URL]/sonarqube-webhook/
 8. Build (Maven)
 9. Publish To Nexus (Nexus)
-  - Nexus maven-releases URL -> Boardgame/pom.xml
-  - Jenkins - Managed files - Add a new Config - Global Maven settins.xml / ID: global-settings - <server> - maven-releases / maven-snapshots
+    1. Nexus maven-releases, maven-snapshots URL -> Boardgame/pom.xml
+    2. Jenkins - Managed files - Add a new Config - Global Maven settings.xml / ID: global-settings - <server> - maven-releases / maven-snapshots
+![Sample](./images/managed-files/global-settings.png)
 10. Build & Tag Docker Image (Docker)
 11. Docker Image Scan (Docker)
 12. Push Docker Image (Docker)
@@ -384,7 +396,10 @@ metadata:
 ```
 14. Verify the Deployment (Kubernetes)
 15. Send Email (Gmail)
-
+    1. **Create Gmail App Password**: Manage your Google Account - Security - 2-Step Verification - App passwords
+    2. **Jenkins SMTP server configuration**: Manage Jenkins - System - E-mail Notification & Extended E-mail notification
+![Sample](./images/system/email-notification.png)
+![Sample](./images/system/extended-email-notification.png)
 
 # <span style="background-color: cyan;">3)Monitoring</span>
 ```bash
