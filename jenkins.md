@@ -32,7 +32,7 @@ pipeline {
         
         stage('File System Scan') {
             steps {
-                sh "trivy fs --format table -o trivy-image-report.html ."
+                sh "trivy fs --format table -o trivy-fs-report.html ."
             }
         }
         
@@ -79,7 +79,7 @@ pipeline {
         
         stage('Docker Image Scan') {
             steps {
-                sh "trivy image --format table -o trivy-fs-report.html mapleliberty/boardshack:latest"
+                sh "trivy image --format table -o trivy-image-report.html mapleliberty/boardshack:latest"
             }
         }
         
