@@ -2,6 +2,12 @@
 
 ✨ **Technologies**: AWS, Jenkins, SonarQube, Nexus, Kubernetes, Docker, Gmail, Prometheus, Grafana
 
+Summary: 
+- Pipeline: Git Checkout -> Maven compile -> Maven test -> Trivy security scan -> SonarQube code quality check -> Maven compile -> Nexus push -> Docker image creation -> Kubernetes deployment -> Email notification
+- Monitoring: Promethes, Prometheus Blackbox Exporter, Dashboard
+
+
+
 Credit to jaiswaladi246
 https://youtu.be/NnkUGzaqqOc?si=-5ugADFn6lgBzpK9
 
@@ -256,6 +262,10 @@ Pipeline
     <td>Kubernetes</td>
     <td>kubernetes, kuberntes cli, kubernetes client api, kubernetes credentials</td>
   </tr>
+      <tr>
+    <td>Prometheus</td>
+    <td>Prometheus Metrics Plugin</td>
+  </tr>
 </table>
 
 ## 2. Jenkins System Configuration
@@ -270,10 +280,6 @@ Manage Jenkins - Tools - JDK / Maven / SonarQube / Docker
 <table>
   <tr>
     <th colspan="5" style="background-color: lightgray;">Jenkins Credentials</th>
-  </tr>
-  <tr>
-    <td>aws-cred</td>
-    <td>eclipse temurin installer</td>
   </tr>
   <tr>
     <td>sonar-cred (Secret text)</td>
@@ -401,7 +407,7 @@ metadata:
 ![Sample](./images/system/email-notification.png)
 ![Sample](./images/system/extended-email-notification.png)
 
-# <span style="background-color: cyan;">3)Monitoring</span>
+# <span style="background-color: cyan;">3) Monitoring</span>
 ```bash
 sudo apt update
 ```
@@ -413,8 +419,14 @@ tar -xvf prometheus-2.53.2.linux-amd64.tar.gz
 cd prometheus-2.53.2.linux-amd64
 ./prometheus &
 ```
+```bash
+# Raspberry pi
+sudo apt install prometheus
+sudo ufw allow 9090
+```
 
 ### Install Prometheus - Blackbox Exporter (Port 9115)
+Prometheus Blackbox Exporter: Monitors the status of services externally, even in environments where collecting internal metrics is impossible or difficult.
 ```bash
 wget https://github.com/prometheus/blackbox_exporter/releases/download/v0.25.0/blackbox_exporter-0.25.0.linux-amd64.tar.gz
 tar -xvf blackbox_exporter-0.25.0.linux-amd64.tar.gz
@@ -429,7 +441,20 @@ wget https://dl.grafana.com/enterprise/release/grafana-enterprise_11.2.2_amd64.d
 sudo dpkg -i grafana-enterprise_11.2.2_amd64.deb
 sudo /bin/systemctl start grafana-server
 ```
-Add to prometheus-2.53.2.linux-amd64/protheus.yml
+```bash
+# Raspberry Pi
+sudo mkdir -p /etc/apt/keyrings/
+wget -q -O - https://apt.grafana.com/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/grafana.gpg > /dev/null
+echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main" | sudo tee /etc/apt/sources.list.d/grafana.list
+sudo apt-get update
+sudo apt-get install -y grafana
+sudo /bin/systemctl enable grafana-server
+sudo /bin/systemctl start grafana-server
+sudo ufw allow 3000
+```
+
+1. Add to prometheus-2.53.2.linux-amd64/prometheus.yml
+In case of Raspberry Pi, edit /etc/prometheus/prometheus.yml
 ```yaml
 scrape_configs:
   - job_name: 'blackbox'
@@ -449,13 +474,58 @@ scrape_configs:
         replacement: [Monitoring Instance ip address]:9115  # The blackbox exporter's real hostname:port.
 ```
 
-Promethius Relaunch
+2. Restart Promethius
+```bash
+pgrep prometheus     
+kill [pid]
+./prometheus &
+```
+```bash
+# Raspberry Pi
+sudo systemctl restart prometheus
+```
+
+3. Create Grafana Dashboard admin admin
+1. Home > Connections > Data sources > prometheus - Connections - Data sources - Connection Prometheus server URL: http://[ip address]:9090  
+*** Change whenever the monitor instance ip address changes
+2. Click on the top right + Import Dashboard 7587 Load, signcl-prometheus: prometheus - Import
+
+## System performance metrics 
+1.Jenkins plugin: prometheus metrics
+
+2. Jenkins server: install Node Exporter (9100)
+```bash
+wget https://github.com/prometheus/node_exporter/releases/download/v1.8.2/node_exporter-1.8.2.linux-amd64.tar.gz
+tar -xvf node_exporter-1.8.2.linux-amd64.tar.gz
+cd node_exporter-1.8.2.linux-amd64.tar.gz
+./node_exporter &
+``` 
+```bash
+# Raspberry pi
+sudo apt install prometheus-node-exporter
+sudo ufw allow 9100
+```
+
+3. Jenkins - System - Prometheus configuration default
+
+4. Monitoring server - prometheus.yml add
+```yaml
+scrape_configs:
+  - job_name: 'node_exporter'
+    static_configs:
+      - targets: ['[jenkins server ip]:9100']
+  - job_name: 'jenkins'
+    metrics_path: '/prometheus'
+    static_configs:
+      - targets: ['[jenkins server ip]:8080']
+```
+
+5. Restart Promethius
 ```bash
 pgrep prometheus     
 kill [pid]
 ./prometheus &
 ```
 
-Create Grafana Dashboard admin admin
-1. Home > Connections > Data sources > prometheus - Connections - Data sources - Connection Prometheus server URL: http://[ip address]:9090 *** Change whenever the monitor instance ip address changes
-2. Click on the top right + Import Dashboard 7587 Load, signcl-prometheus: prometheus - Import
+6. Create a Grafana dashboard: Click on the top right + Import Dashboard 1860 & 9964 Load, signcl-prometheus: prometheus - Import
+![Sample](./images/monitor/prometheus-node-exporter.png)
