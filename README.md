@@ -2,7 +2,7 @@
 
 ✨ **Technologies**: AWS, Jenkins, SonarQube, Nexus, Kubernetes, Docker, Gmail, Prometheus, Grafana
 
-Inspired by jaiswaladi246
+Credit to jaiswaladi246
 https://youtu.be/NnkUGzaqqOc?si=-5ugADFn6lgBzpK9
 
 # <span style="background-color: cyan;">1) Prepare AWS</span>
