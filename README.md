@@ -3,7 +3,7 @@
 ✨ **Technologies**: AWS, Jenkins, SonarQube, Nexus, Kubernetes, Docker, Gmail, Prometheus, Grafana
 
 Summary: 
-- Pipeline: Git Checkout -> Maven compile -> Maven test -> Trivy security scan -> SonarQube code quality check -> Maven compile -> Nexus push -> Docker image creation -> Kubernetes deployment -> Email notification
+- Pipeline: Git Checkout -> Maven compile -> Maven test -> Trivy security scan -> SonarQube code quality check -> Maven build -> Nexus push -> Docker image creation -> Kubernetes deployment -> Email notification
 - Monitoring: Promethes, Prometheus Blackbox Exporter, Dashboard
 
 
