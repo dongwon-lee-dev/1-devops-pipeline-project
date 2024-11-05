@@ -228,6 +228,11 @@ sudo apt update
 
 # Install Jenkins
 sudo apt install jenkins -y
+
+# Install kubectl - replace arm64, amd64 according to architecture
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl"
+chmod +x ./kubectl
+sudo mv ./kubectl /usr/local/bin/kubectl
 ```
 
 Install Trivy
