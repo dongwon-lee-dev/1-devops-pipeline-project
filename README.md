@@ -137,7 +137,7 @@ kubeadm join 172.31.94.179:6443 --token w0gcqq.ipyxo3aa0t180qqa \
 export KUBECONFIG=/etc/kubernetes/admin.conf  
 ```
 
-### When getting the connection refused error when doing 'kubectl get node' such as
+### ⚠️ When getting the connection refused error when doing 'kubectl get node' such as
 ```bash
 E1017 13:08:17.023750    4693 memcache.go:265] couldn't get current server API group list: Get "http://localhost:8080/api?timeout=32s": dial tcp 127.0.0.1:8080: connect: connection refused
 ```
@@ -161,6 +161,8 @@ kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.49.0/deploy/static/provider/baremetal/deploy.yaml
 ```
 
+Extra) Install kubeaudit
+
 ```bash
 wget https://github.com/Shopify/kubeaudit/releases/download/v0.22.1/kubeaudit_0.22.1_linux_amd64.tar.gz
 tar -xvzf kubeaudit_0.22.1_linux_amd64.tar.gz
@@ -168,7 +170,7 @@ sudo mv kubeaudit /usr/local/bin/
 kubeaudit all
 ```
 
-### 7. ☸️ Setting up Kubernetes workers
+### 7. ☸️ Setting up Kubernetes workers (Create & Join)
 ```bash
 sudo su
 ```
