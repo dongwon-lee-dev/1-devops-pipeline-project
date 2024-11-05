@@ -406,6 +406,12 @@ metadata:
   annotations:
     kubernetes.io/service-account.name: jenkins
 ```
+```bash
+kubectl apply -n webapps -f secret.yaml
+```
+```bash
+kubectl describe secret mysecretname -n webapps
+```
 14. Verify the Deployment (Kubernetes)
 15. Send Email (Gmail)
     1. **Create Gmail App Password**: Manage your Google Account - Security - 2-Step Verification - App passwords
