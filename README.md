@@ -103,7 +103,7 @@ cat /nexus-data/admin.password
 
 *** Wipe the Nexus releases, snapshots repository after each deployment
 
-### 6. Kubernetes Master Configuration
+### 6. ☸️ Kubernetes Master Configuration
 ```bash
 sudo su
 ```
@@ -168,7 +168,7 @@ sudo mv kubeaudit /usr/local/bin/
 kubeaudit all
 ```
 
-### 7. Setting up Kubernetes workers
+### 7. ☸️ Setting up Kubernetes workers
 ```bash
 sudo su
 ```
