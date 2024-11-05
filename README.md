@@ -135,6 +135,10 @@ kubeadm join 172.31.94.179:6443 --token w0gcqq.ipyxo3aa0t180qqa \
 ```
 ```bash
 export KUBECONFIG=/etc/kubernetes/admin.conf  
+
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
 
 ### ⚠️ When getting the connection refused error when doing 'kubectl get node' such as
