@@ -211,6 +211,8 @@ kubeadm token create --print-join-command
 
 #!/bin/bash
 ```bash
+sudo apt update -y
+
 # Install OpenJDK 17 JRE Headless
 sudo apt install openjdk-17-jre-headless -y
 
@@ -228,6 +230,9 @@ sudo apt update
 
 # Install Jenkins
 sudo apt install jenkins -y
+
+sudo systemctl start jenkins
+sudo systemctl enable jenkins
 
 # Install kubectl - replace arm64, amd64 according to architecture
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl"
