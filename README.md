@@ -19,10 +19,38 @@
 | Grafana    | Dashboard tool for visualizing data from various sources, often used with Prometheus.                              |
 
 
+## Table of Contents
+- [1) Prepare AWS](#1-prepare-aws)
+  - [1. Create VPC](#1-create-vpc)
+  - [2. Create Security Group ](#2-create-security-group)
+  - [3. Create EC2 Instances](#3-create-ec2-instances)
+  - [4. Run script on SonarQube (Port 9000) instance](#4-run-script-on-sonarqube-port-9000-instance)
+  - [5. Run script on Nexus (Port 8081) instance](#5-run-script-on-nexus-port-8081-instance)
+  - [6. ☸️ Kubernetes Master Configuration](#6-kubernetes-master-configuration)
+  - [⚠️ When getting the connection refused error when doing 'kubectl get node' such as](#️-when-getting-the-connection-refused-error-when-doing-kubectl-get-node-such-as)
+  - [7. ☸️ Setting up Kubernetes workers (Create & Join)](#7-setting-up-kubernetes-workers-create--join)
+  - [8. Run script on Jenkins (Port 8080) instance](#8-run-script-on-jenkins-port-8080-instance)
+- [2) Jenkins Pipeline](#2-jenkins-pipeline)
+  - [1. Install Jenkins plugins](#1-install-jenkins-plugins)
+  - [2. Jenkins System Configuration](#2-jenkins-system-configuration)
+  - [3. Setting up Jenkins Credentials](#3-setting-up-jenkins-credentials)
+  - [4. Jenkins pipeline](#4-jenkins-pipeline)
+- [3) Monitoring](#3-monitoring)
+  - [Install Prometheus (Port 9090)](#install-prometheus-port-9090)
+  - [Install Prometheus - Blackbox Exporter (Port 9115)](#install-prometheus---blackbox-exporter-port-9115)
+  - [Install Grafana (Port 3000)](#install-grafana-port-3000)
+  - [System performance metrics](#system-performance-metrics)
+  
+<br>
+<br>
+
 Credit to jaiswaladi246
 https://youtu.be/NnkUGzaqqOc?si=-5ugADFn6lgBzpK9
 
-# <span style="background-color: cyan;">1) Prepare AWS</span>
+
+---
+
+# 1) Prepare AWS
 ### 1. Create VPC
 ### 2. Create Security Group 
 | Type | Protocol | Port range | Source |
@@ -218,7 +246,7 @@ To get the Master's Token again
 ```bash
 kubeadm token create --print-join-command
 ```
-### 7. Run script on Jenkins (Port 8080) instance
+### 8. Run script on Jenkins (Port 8080) instance
 
 #!/bin/bash
 ```bash
@@ -259,9 +287,9 @@ echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main |
 sudo apt update
 sudo apt install trivy -y
 ```
-=============================================================================
+---
 
-# <span style="background-color: cyan;">2) Jenkins Pipeline</span>
+# 2) Jenkins Pipeline
 
 Pipeline
 
@@ -304,7 +332,7 @@ Manage Jenkins - Tools - JDK / Maven / SonarQube / Docker
 ![Sample](./images/tools/docker.png)
 
 
-## 2. Setting up Jenkins Credentials
+## 3. Setting up Jenkins Credentials
 <table>
   <tr>
     <th colspan="5" style="background-color: lightgray;">Jenkins Credentials</th>
@@ -331,7 +359,7 @@ Manage Jenkins - Tools - JDK / Maven / SonarQube / Docker
   </tr>
 </table>
 
-## 3. Jenkins pipeline
+## 4. Jenkins pipeline
 
 Refer to jenkins.md file
 
@@ -441,7 +469,10 @@ kubectl describe secret mysecretname -n webapps
 ![Sample](./images/system/email-notification.png)
 ![Sample](./images/system/extended-email-notification.png)
 
-# <span style="background-color: cyan;">3) Monitoring</span>
+
+---
+
+# 3) Monitoring
 ```bash
 sudo apt update
 ```
@@ -562,4 +593,4 @@ kill [pid]
 ```
 
 6. Create a Grafana dashboard: Click on the top right + Import Dashboard 1860 & 9964 Load, signcl-prometheus: prometheus - Import
-![Sample](./images/monitor/prometheus-node-exporter.png)
+
