@@ -1,11 +1,19 @@
 # Corporate Level DevOps Pipeline Project - EC2 Version
 
 
----
+[To Home](README.md)
 
-# 1) Prepare AWS
+---
+# 1) Prepare AWS Environment
 ### 1. Create VPC
-### 2. Create Security Group 
+1. VPC Dashboard - Create VPC
+2. VPC settings
+    - Resources to create: VPC and more
+    - NAT gateways: In 1 AZ
+    - VPC endpoints: None
+    - Others are default
+
+### 2. Create Security Groups 
 | Type | Protocol | Port range | Source |
 |---------|----------|----------|----------|
 | SSH | TCP  |  22|0.0.0.0/0|
@@ -16,7 +24,7 @@
 | Custom TCP | TCP |   3000-10000 |0.0.0.0/0|
 | Custom TCP |  TCP   |  30000-32767|0.0.0.0/0|
 
-### 3. Create EC2 Instances
+### 3. Create EC2 Instances on Public Subnet
 <table>
   <tr>
     <th colspan="5" style="background-color: lightgray;">EC2 Instance</th>
@@ -27,11 +35,13 @@
   </tr>
   <tr>
     <td>t2.large gp2 20gb</td>
-    <td>Jenkins / Monitoring(Prometheus, Grafana) - Total 2 Instances</td>
+    <td>Jenkins / Monitoring (Prometheus & Prometheus - Blackbox Exporter & Grafana) - Total 2 Instances</td>
   </tr>
 </table>
 
-### 4. Run script on SonarQube (Port 9000) instance
+# 2) Install Applications
+
+### 1. SonarQube (Port 9000): Install on SonarQube Instance
 ```bash
 sudo apt update
 
@@ -58,7 +68,7 @@ docker run -d --restart=always --name sonar -p 9000:9000 sonarqube:lts-community
 |---------|----------|
 | admin | admin  |  
 
-### 5. Run script on Nexus (Port 8081) instance
+### 2. Nexus (Port 8081): Install on Nexus Instance
 ```bash
 sudo apt update
 
@@ -95,7 +105,7 @@ cat /nexus-data/admin.password
 
 *** Wipe the Nexus releases, snapshots repository after each deployment
 
-### 6. ☸️ Kubernetes Master Configuration
+### 3. Kubernetes Master: Install on Kubernetes Master Instance
 ```bash
 sudo su
 ```
@@ -166,7 +176,7 @@ sudo mv kubeaudit /usr/local/bin/
 kubeaudit all
 ```
 
-### 7. ☸️ Setting up Kubernetes workers (Create & Join)
+### 4. Kubernetes Worker (Create & Join): Install on Kubernetes Worker Instance
 ```bash
 sudo su
 ```
@@ -199,7 +209,7 @@ To get the Master's Token again
 ```bash
 kubeadm token create --print-join-command
 ```
-### 8. Run script on Jenkins (Port 8080) instance
+### 5. Jenkins (Port 8080): Install on Jenkins Instance
 
 #!/bin/bash
 ```bash
@@ -247,7 +257,7 @@ sudo apt install trivy -y
 sudo apt update
 ```
 
-### Install Prometheus (Port 9090)
+### 6. Prometheus (Port 9090): Install on Monitoring Instance
 ```bash
 wget https://github.com/prometheus/prometheus/releases/download/v2.53.2/prometheus-2.53.2.linux-amd64.tar.gz
 tar -xvf prometheus-2.53.2.linux-amd64.tar.gz
@@ -260,7 +270,7 @@ sudo apt install prometheus
 sudo ufw allow 9090
 ```
 
-### Install Prometheus - Blackbox Exporter (Port 9115)
+### 7. Prometheus - Blackbox Exporter (Port 9115): Install on Monitoring Instance
 Prometheus Blackbox Exporter: Monitors the status of services externally, even in environments where collecting internal metrics is impossible or difficult.
 ```bash
 wget https://github.com/prometheus/blackbox_exporter/releases/download/v0.25.0/blackbox_exporter-0.25.0.linux-amd64.tar.gz
@@ -269,7 +279,7 @@ cd blackbox_exporter-0.25.0.linux-amd64
 ./blackbox_exporter &
 ```
 
-### Install Grafana (Port 3000)
+### 8. Grafana (Port 3000): Install on Monitoring Instance
 ```bash
 sudo apt-get install -y adduser libfontconfig1 musl
 wget https://dl.grafana.com/enterprise/release/grafana-enterprise_11.2.2_amd64.deb
@@ -287,3 +297,6 @@ sudo /bin/systemctl enable grafana-server
 sudo /bin/systemctl start grafana-server
 sudo ufw allow 3000
 ```
+---
+
+[To Home](README.md)
