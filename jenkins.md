@@ -1,12 +1,12 @@
 ```groovy
 pipeline {
     agent any
-    
+
     tools {
         jdk 'jdk17'
         maven 'maven3'
     }
-    
+
     environment {
         SCANNER_HOME= tool "sonar-scanner"
     }
@@ -17,25 +17,25 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/dongwon-lee-dev/Boardgame.git'
             }
         }
-        
+
         stage('Compile') {
             steps {
                 sh "mvn compile"
             }
         }
-        
+
         stage('Test') {
             steps {
                 sh "mvn test"
             }
         }
-        
+
         stage('File System Scan') {
             steps {
                 sh "trivy fs --format table -o trivy-fs-report.html ."
             }
         }
-        
+
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('sonarqube') {
@@ -44,7 +44,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Quality Gate') {
             steps {
                 script {
@@ -52,13 +52,13 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Build') {
             steps {
                 sh "mvn package"
             }
         }
-        
+
         stage('Publish To Nexus') {
             steps {
                 withMaven(globalMavenSettingsConfig: 'global-settings', jdk: 'jdk17', maven: 'maven3', mavenSettingsConfig: '', traceability: true) {
@@ -66,7 +66,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Build & Tag Docker Image') {
             steps {
                 script {
@@ -76,13 +76,13 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Docker Image Scan') {
             steps {
                 sh "trivy image --format table -o trivy-image-report.html mapleliberty/boardshack:latest"
             }
         }
-        
+
         stage('Push Docker Image') {
             steps {
                 script {
@@ -92,7 +92,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Deploy To Kubernetes') {
             steps {
                withKubeConfig(caCertificate: '', clusterName: 'kubernetes', contextName: '', credentialsId: 'k8-cred', namespace: 'webapps', restrictKubeConfigAccess: false, serverUrl: 'https://34.195.250.196:6443') {
@@ -100,7 +100,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Verify the Deployment') {
             steps {
                withKubeConfig(caCertificate: '', clusterName: 'kubernetes', contextName: '', credentialsId: 'k8-cred', namespace: 'webapps', restrictKubeConfigAccess: false, serverUrl: 'https://34.195.250.196:6443') {
@@ -110,7 +110,7 @@ pipeline {
             }
         }
     }
-    
+
     post {
     always {
         script {
