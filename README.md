@@ -25,6 +25,8 @@
   - [ECS version](#ecs-version)
   - [EC2 version](#ec2-version)
 - [2) Deploy Pipeline](#2-deploy-pipeline)
+  - [Jenkins version](#jenkins-version)
+  - [GitHub Actions version](#github-actions-version)
 - [3) Set up Monitoring](#4-set-up-monitoring)
   - [Install Prometheus (Port 9090)](#install-prometheus-port-9090)
   - [Install Prometheus - Blackbox Exporter (Port 9115)](#install-prometheus---blackbox-exporter-port-9115)
@@ -43,26 +45,28 @@ https://youtu.be/NnkUGzaqqOc?si=-5ugADFn6lgBzpK9
 
 Deploy infrastructure using **ECS version** or **EC2 version**.
 
-## 1. ECS version
+## ECS version
 
 [ECS version](https://github.com/dongwon-lee-dev/terraform-devops-pipeline)
 
 ![Pipeline](./images/pipeline-ecs-version.jpg)
 
-## 2. EC2 version
+## EC2 version
 
 [EC2 version](ec2-version.md)
 
 ---
 
 # 2) Deploy Pipeline
+Deploy pipeline using **Jenkins version** or **GitHub Actions version**.
 
-## 1. Jenkins version
+
+## Jenkins version
 
 [Jenkins version](jenkins.md)
 
 
-## 2. GitHub Actions version
+## GitHub Actions version
 
 [GitHub Actions version](github-actions-version.md)
 
