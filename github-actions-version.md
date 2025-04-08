@@ -1,4 +1,7 @@
 # GitHub Actions version Pipeline
+[To Home](README.md)
+
+
 ### ⭐ GitHub Actions-provided actions
 | Action Name                     | Description                                       |
 |---------------------------------|---------------------------------------------------|
@@ -74,7 +77,41 @@ jobs:
       run: echo "The Quality Gate status is ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"
 ```
 
-### 4. Run Trivy Security Scan
+### 4. Push to Nexus
+1. Create GitHub Repository Secrets
+    - MAVEN_USERNAME
+    - MAVEN_PASSWORD
+```
+    - name: Create Maven settings.xml
+      run: |
+        cat << EOF > ~/.m2/settings.xml
+        <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
+          <servers>
+            <server>
+              <id>healthcheck-service-release</id>
+              <username>${{ secrets.MAVEN_USERNAME }}</username>
+              <password>${{ secrets.MAVEN_PASSWORD }}</password>
+            </server>
+            <server>
+              <id>healthcheck-service-snapshot</id>
+              <username>${{ secrets.MAVEN_USERNAME }}</username>
+              <password>${{ secrets.MAVEN_PASSWORD }}</password>
+            </server>
+          </servers>
+        </settings>
+        EOF
+
+      
+    - name: Build and deploy to Nexus
+      run: mvn --batch-mode deploy
+      env:
+        MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+        MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+```
+
+### 5. Run Trivy Security Scan
 ```
     - name: Build Docker image
       run: docker build -t [Image Name] .
@@ -98,7 +135,7 @@ jobs:
         path: trivy-report.json
 ```
 
-### 5. Push Docker Image to AWS ECR
+### 6. Push Docker Image to AWS ECR
 ⭐ Use awslabs/amazon-ecr-credential-helper to securely use AWS Credentials.
 [ECR Credential Helper](https://github.com/awslabs/amazon-ecr-credential-helper)
 

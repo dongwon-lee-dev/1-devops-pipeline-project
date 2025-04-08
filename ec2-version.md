@@ -1,11 +1,30 @@
-# Corporate Level DevOps Pipeline Project - EC2 Version
-
+# Infrastructure Deployment - EC2 Version
 
 [To Home](README.md)
 
 ---
+
+## Table of Contents
+- [1) Prepare AWS Environment](#1-prepare-aws-environment)
+  - [1.1. Create VPC](#1-create-vpc)
+  - [1.2. Create Security Groups](#2-create-security-groups)
+  - [1.3. Create EC2 Instances on Public Subnet](#3-create-ec2-instances-on-public-subnet)
+- [2) Install Applications](#2-install-applications)
+  - [2.1. SonarQube (Port 9000): Install on SonarQube Instance](#21-sonarqube-port-9000-install-on-sonarqube-instance)
+  - [2.2. Nexus (Port 8081): Install on Nexus Instance](#22-nexus-port-8081-install-on-nexus-instance)
+  - [2.3. Kubernetes Master: Install on Kubernetes Master Instance](#23-kubernetes-master-install-on-kubernetes-master-instance)
+  - [2.4. Kubernetes Worker (Create & Join): Install on Kubernetes Worker Instance](#24-kubernetes-worker-create--join-install-on-kubernetes-worker-instance)
+  - [2.5. Jenkins (Port 8080): Install on Jenkins Instance](#25-jenkins-port-8080-install-on-jenkins-instance)
+  - [2.6. Prometheus (Port 9090): Install on Monitoring Instance](#26-prometheus-port-9090-install-on-monitoring-instance)
+  - [2.7. Prometheus - Blackbox Exporter (Port 9115): Install on Monitoring Instance](#27-prometheus--blackbox-exporter-port-9115-install-on-monitoring-instance)
+  - [2.8. Grafana (Port 3000): Install on Monitoring Instance](#28-grafana-port-3000-install-on-monitoring-instance)
+
+
+
+---
+
 # 1) Prepare AWS Environment
-### 1. Create VPC
+### 1.1. Create VPC
 1. VPC Dashboard - Create VPC
 2. VPC settings
     - Resources to create: VPC and more
@@ -13,7 +32,7 @@
     - VPC endpoints: None
     - Others are default
 
-### 2. Create Security Groups 
+### 1.2. Create Security Groups 
 | Type | Protocol | Port range | Source |
 |---------|----------|----------|----------|
 | SSH | TCP  |  22|0.0.0.0/0|
@@ -24,7 +43,7 @@
 | Custom TCP | TCP |   3000-10000 |0.0.0.0/0|
 | Custom TCP |  TCP   |  30000-32767|0.0.0.0/0|
 
-### 3. Create EC2 Instances on Public Subnet
+### 1.3. Create EC2 Instances on Public Subnet
 <table>
   <tr>
     <th colspan="5" style="background-color: lightgray;">EC2 Instance</th>
@@ -39,9 +58,11 @@
   </tr>
 </table>
 
+---
+
 # 2) Install Applications
 
-### 1. SonarQube (Port 9000): Install on SonarQube Instance
+### 2.1. SonarQube (Port 9000): Install on SonarQube Instance
 ```bash
 sudo apt update
 
@@ -68,7 +89,7 @@ docker run -d --restart=always --name sonar -p 9000:9000 sonarqube:lts-community
 |---------|----------|
 | admin | admin  |  
 
-### 2. Nexus (Port 8081): Install on Nexus Instance
+### 2.2. Nexus (Port 8081): Install on Nexus Instance
 ```bash
 sudo apt update
 
@@ -105,7 +126,7 @@ cat /nexus-data/admin.password
 
 *** Wipe the Nexus releases, snapshots repository after each deployment
 
-### 3. Kubernetes Master: Install on Kubernetes Master Instance
+### 2.3. Kubernetes Master: Install on Kubernetes Master Instance
 ```bash
 sudo su
 ```
@@ -176,7 +197,7 @@ sudo mv kubeaudit /usr/local/bin/
 kubeaudit all
 ```
 
-### 4. Kubernetes Worker (Create & Join): Install on Kubernetes Worker Instance
+### 2.4. Kubernetes Worker (Create & Join): Install on Kubernetes Worker Instance
 ```bash
 sudo su
 ```
@@ -209,7 +230,7 @@ To get the Master's Token again
 ```bash
 kubeadm token create --print-join-command
 ```
-### 5. Jenkins (Port 8080): Install on Jenkins Instance
+### 2.5. Jenkins (Port 8080): Install on Jenkins Instance
 
 #!/bin/bash
 ```bash
@@ -257,7 +278,7 @@ sudo apt install trivy -y
 sudo apt update
 ```
 
-### 6. Prometheus (Port 9090): Install on Monitoring Instance
+### 2.6. Prometheus (Port 9090): Install on Monitoring Instance
 ```bash
 wget https://github.com/prometheus/prometheus/releases/download/v2.53.2/prometheus-2.53.2.linux-amd64.tar.gz
 tar -xvf prometheus-2.53.2.linux-amd64.tar.gz
@@ -270,7 +291,7 @@ sudo apt install prometheus
 sudo ufw allow 9090
 ```
 
-### 7. Prometheus - Blackbox Exporter (Port 9115): Install on Monitoring Instance
+### 2.7. Prometheus - Blackbox Exporter (Port 9115): Install on Monitoring Instance
 Prometheus Blackbox Exporter: Monitors the status of services externally, even in environments where collecting internal metrics is impossible or difficult.
 ```bash
 wget https://github.com/prometheus/blackbox_exporter/releases/download/v0.25.0/blackbox_exporter-0.25.0.linux-amd64.tar.gz
@@ -279,7 +300,7 @@ cd blackbox_exporter-0.25.0.linux-amd64
 ./blackbox_exporter &
 ```
 
-### 8. Grafana (Port 3000): Install on Monitoring Instance
+### 2.8. Grafana (Port 3000): Install on Monitoring Instance
 ```bash
 sudo apt-get install -y adduser libfontconfig1 musl
 wget https://dl.grafana.com/enterprise/release/grafana-enterprise_11.2.2_amd64.deb
