@@ -25,12 +25,11 @@
   - [ECS version](#ecs-version)
   - [EC2 version](#ec2-version)
 - [2) Deploy Pipeline](#2-deploy-pipeline)
-- [4) Set up Monitoring](#4-set-up-monitoring)
+- [3) Set up Monitoring](#4-set-up-monitoring)
   - [Install Prometheus (Port 9090)](#install-prometheus-port-9090)
   - [Install Prometheus - Blackbox Exporter (Port 9115)](#install-prometheus---blackbox-exporter-port-9115)
   - [Install Grafana (Port 3000)](#install-grafana-port-3000)
   - [System performance metrics](#system-performance-metrics)
-- [5) GitHub Actions version](#5-github-actions-version)
 
 <br>
 <br>
@@ -69,7 +68,7 @@ Deploy infrastructure using **ECS version** or **EC2 version**.
 
 ---
 
-# 4) Set up Monitoring
+# 3) Set up Monitoring
 
 ## Configure Prometheus
 1. Add to prometheus-2.53.2.linux-amd64/prometheus.yml
