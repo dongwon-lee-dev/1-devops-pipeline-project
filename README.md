@@ -40,6 +40,9 @@ Credit to jaiswaladi246
 https://youtu.be/NnkUGzaqqOc?si=-5ugADFn6lgBzpK9
 
 ---
+![Project Introduction](./images/project-introduction.jpg)
+
+---
 
 # 1) Deploy Infrastructure
 
