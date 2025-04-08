@@ -17,6 +17,8 @@
 | Prometheus | Time-series monitoring tool that collects and queries metrics. |
 | Grafana | Dashboard tool for visualizing data from various sources, often used with Prometheus. |
 
+---
+
 ## Table of Contents
 
 - [1) Deploy Infrastructure](#1-deploy-infrastructure)
@@ -32,6 +34,7 @@
   - [Install Prometheus - Blackbox Exporter (Port 9115)](#install-prometheus---blackbox-exporter-port-9115)
   - [Install Grafana (Port 3000)](#install-grafana-port-3000)
   - [System performance metrics](#system-performance-metrics)
+- [5) GitHub Actions version](#5-github-actions-version)
 
 <br>
 <br>
@@ -45,13 +48,13 @@ https://youtu.be/NnkUGzaqqOc?si=-5ugADFn6lgBzpK9
 
 Deploy infrastructure using **ECS version** or **EC2 version**.
 
-### ECS version
+## 1. ECS version
 
 [ECS version](https://github.com/dongwon-lee-dev/terraform-devops-pipeline)
 
 ![Pipeline](./images/pipeline-ecs-version.jpg)
 
-### EC2 version
+## 2. EC2 version
 
 [EC2 version](ec2-version.md)
 
@@ -197,9 +200,9 @@ Steps
 3. Test (Maven)
 4. File System Scan (Trivy)
 5. SonarQube Analysis (SonarQube)
-   1. **Get SonarQube Token**: SonarQube - Administration - Security - Users - Administrator Token - Generate Tokens
-   2. **Create Jenkins SonarQube Credential**: Jenkins Credentials - create sonar-cred (Secret text) with the token
-   3. **Set up Jenkins SonarQube System**: Jenkins System - SonarQube installations - sonarqube / server url / sonar-cred
+   1. Create **SonarQube Token**: SonarQube - Administration - Security - Users - Administrator: Tokens - Generate Tokens - Copy the token and save it somewhere
+   2. Create Jenkins **SonarQube Credential**: Jenkins Credentials - create sonar-cred (Secret text) with the token
+   3. Configure **Jenkins System**: Jenkins System - SonarQube installations - sonarqube / server url / sonar-cred
    4. **Register 3rd party tool in pipeline**: environment { }
 6. Quality Gate (SonarQube)
    1. **Register Webhook on SonarQube**: SonarQube - Administration - Configuration - Webhooks - Name: jenkins, URL: [Jenkins URL]/sonarqube-webhook/
@@ -389,3 +392,7 @@ kill [pid]
 ```
 
 6. Create a Grafana dashboard: Click on the top right + Import Dashboard 1860 & 9964 Load, signcl-prometheus: prometheus - Import
+
+# 5) GitHub Actions version
+
+[GitHub Actions version](github-actions-version.md)
