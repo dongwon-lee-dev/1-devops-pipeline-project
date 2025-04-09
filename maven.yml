@@ -110,7 +110,7 @@ jobs:
         name: trivy-report
         path: trivy-report.json
         
-    - name: Install Docker Credential Helper
+    - name: Install ECR Credential Helper
       run: |
         sudo apt-get install amazon-ecr-credential-helper
         mkdir -p ~/.docker

@@ -1,8 +1,23 @@
 # GitHub Actions version Pipeline
 [To Home](README.md)
 
+---
 
-### ⭐ GitHub Actions-provided actions
+## Table of Contents
+
+- [GitHub Actions-provided actions](#github-actions-provided-actions)
+- [1. Create a workflow yml file in /.github/workflows folder](#1-create-a-workflow-yml-file-in-githubworkflows-folder)
+- [2. Configure execution condition](#2-configure-execution-condition)
+- [3. Configure execution environment](#3-configure-execution-environment)
+- [4. Run SonarQube scan](#4-run-sonarqube-scan)
+- [5. Push to Nexus](#5-push-to-nexus)
+- [6. Run Trivy Security Scan](#6-run-trivy-security-scan)
+- [7. Push Docker Image to AWS ECR](#7-push-docker-image-to-aws-ecr)
+
+
+---
+
+### GitHub Actions-provided actions
 | Action Name                     | Description                                       |
 |---------------------------------|---------------------------------------------------|
 | `actions/checkout`              | Checks out your repository for use in the workflow. |
@@ -15,10 +30,12 @@
 | `actions/create-release`        | Creates a GitHub release.                         |
 | `actions/upload-release-asset`  | Uploads assets to the created release.            |
 
+---
+
 ### 1. Create a workflow yml file in /.github/workflows folder
 For example, /.github/workflows/maven.yml
 
-### Configure execution condition
+### 2. Configure execution condition
 ```
 on:
   push:
@@ -26,14 +43,14 @@ on:
   pull_request:
     branches: [ "main" ]
 ```
-### 2. Configure execution environment
+### 3. Configure execution environment
 ```
 jobs:
   docker-build:
     runs-on: ubuntu-latest
 ```
 
-### 3. Run SonarQube scan
+### 4. Run SonarQube scan
 ⭐ Use SonarSource/sonarqube-quality-gate-action
 [SonarQube Quality Gate Action](https://github.com/SonarSource/sonarqube-quality-gate-action)
 
@@ -77,7 +94,7 @@ jobs:
       run: echo "The Quality Gate status is ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"
 ```
 
-### 4. Push to Nexus
+### 5. Push to Nexus
 1. Create GitHub Repository Secrets
     - MAVEN_USERNAME
     - MAVEN_PASSWORD
@@ -111,7 +128,7 @@ jobs:
         MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
 ```
 
-### 5. Run Trivy Security Scan
+### 6. Run Trivy Security Scan
 ```
     - name: Build Docker image
       run: docker build -t [Image Name] .
@@ -135,15 +152,15 @@ jobs:
         path: trivy-report.json
 ```
 
-### 6. Push Docker Image to AWS ECR
-⭐ Use awslabs/amazon-ecr-credential-helper to securely use AWS Credentials.
-[ECR Credential Helper](https://github.com/awslabs/amazon-ecr-credential-helper)
+### 7. Push Docker Image to AWS ECR
+⭐ Use awslabs/amazon-ecr-credential-helper to securely use AWS Credentials. ECR Credential Helper
 
-1. Create GitHub Repository Secrets
+1. Create GitHub Repository Secrets.
     - AWS_ACCESS_KEY_ID
     - AWS_SECRET_ACCESS_KEY
+2. Push the docker image to ECR.
 ```
-    - name: Install Docker Credential Helper
+    - name: Install ECR Credential Helper
       run: |
         sudo apt-get install amazon-ecr-credential-helper
         mkdir -p ~/.docker
@@ -159,4 +176,12 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: |
         docker push [ECR Repository URL]
+```
+
+### 8. Redeploy ECS Service
+1. Create a task definition that pulls image from ECR.
+2. Create a ECS service with the created task definition
+3. Force redeploy the ECS service to make it use the latest image.
+```
+aws ecs update-service --cluster app-cluster --service [Service Name] --force-new-deployment
 ```
