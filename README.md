@@ -2,21 +2,6 @@
 
 ![Pipeline](./images/pipeline.jpg)
 
-✨ **Technologies** ✨
-| Technology | Description |
-|------------|--------------------------------------------------------------------------------------------------------------------|
-| AWS | Cloud platform by Amazon offering services like computing, storage, and networking. |
-| Jenkins | Open-source automation server used to build and run CI/CD pipelines. |
-| GitHub | Cloud-based platform for hosting Git repositories, enabling version control and collaboration. |
-| Maven | Build automation and dependency management tool for Java-based projects. |
-| Trivy | Security scanner that detects vulnerabilities in container images, file systems, and code repositories. |
-| SonarQube | Static code analysis tool that detects bugs, code smells, and security vulnerabilities. |
-| Nexus | Repository manager that stores and distributes built artifacts. |
-| Docker | Platform that packages applications into containers for consistent and portable execution. |
-| Kubernetes | Container orchestration platform for automating deployment, scaling, and management of containerized applications. |
-| Prometheus | Time-series monitoring tool that collects and queries metrics. |
-| Grafana | Dashboard tool for visualizing data from various sources, often used with Prometheus. |
-
 ---
 
 ## Table of Contents
