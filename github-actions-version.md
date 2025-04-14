@@ -183,5 +183,5 @@ jobs:
 2. Create a ECS service with the created task definition
 3. Force redeploy the ECS service to make it use the latest image.
 ```
-aws ecs update-service --cluster app-cluster --service [Service Name] --force-new-deployment
+aws ecs update-service --region us-east-1 --cluster app-cluster --service [Service Name] --force-new-deployment
 ```
