@@ -12,17 +12,12 @@
 - [2) Deploy Pipeline](#2-deploy-pipeline)
   - [Jenkins version](#jenkins-version)
   - [GitHub Actions version](#github-actions-version)
+  - [GitLab CI/CD version](#gitlab-cicd-version)
 - [3) Set up Monitoring](#4-set-up-monitoring)
   - [Install Prometheus (Port 9090)](#install-prometheus-port-9090)
   - [Install Prometheus - Blackbox Exporter (Port 9115)](#install-prometheus---blackbox-exporter-port-9115)
   - [Install Grafana (Port 3000)](#install-grafana-port-3000)
   - [System performance metrics](#system-performance-metrics)
-
-<br>
-<br>
-
-Credit to jaiswaladi246
-https://youtu.be/NnkUGzaqqOc?si=-5ugADFn6lgBzpK9
 
 ---
 ![Project Introduction](./images/project-introduction.jpg)
@@ -57,6 +52,10 @@ Deploy pipeline using **Jenkins version** or **GitHub Actions version**.
 ## GitHub Actions version
 
 [GitHub Actions version](github-actions-version.md)
+
+## GitLab CI/CD version
+
+[GitLab CI/CD version](gitlab-cicd-version.md)
 
 ---
 

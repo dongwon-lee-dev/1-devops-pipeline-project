@@ -4,10 +4,19 @@
 ---
 
 ## Table of Contents
+[1. Create Secrets](#1-create-secrets)  
+[2. Create a Pipeline](#2-create-a-pipeline)  
+[3. SonarQube Code Quality Check](#3-sonarqube-code-quality-check)  
+[4. SonarQube Quality Gate Check](#4-sonarqube-quality-gate-check)  
+[5. Push Artifact to Nexus Repository](#5-push-artifact-to-nexus-repository)  
+[6. Build Docker Image](#6-build-docker-image)  
+[7. Trivy Security Scan](#7-trivy-security-scan)  
+[8. Push to AWS ECR (Elastic Container Registry)](#9-push-to-aws-ecrelastic-container-registry)  
+[9. Deploy To AWS ECS (Elastic Container Service)](#0-deploy-to-aws-ecselastic-container-service)
 
 ---
 
-### Configure Secrets
+### 1. Create Secrets
 1. AWS_ACCESS_KEY_ID
 2. AWS_SECRET_ACCESS_KEY
 3. SONAR_HOST_URL
@@ -19,7 +28,7 @@
 
 ---
 
-### 1. Create a Pipeline
+### 2. Create a Pipeline
 1. Create a pipeline file on project root folder: /.gitlab-ci.yml
 ```
 stages:
@@ -47,7 +56,7 @@ cache:
     - .m2/repository
 ```
 
-### 2. SonarQube Code Quality Check
+### 3. SonarQube Code Quality Check
 ```
 sonarqube-check:
   stage: sonarqube
@@ -60,7 +69,7 @@ sonarqube-check:
   allow_failure: false
 ```
 
-### 3. SonarQube Quality Gate Check
+### 4. SonarQube Quality Gate Check
 ```
 check-quality-gate:
   stage: quality-gate
@@ -73,7 +82,7 @@ check-quality-gate:
     - if [ "$STATUS" != "OK" ]; then echo "Quality Gate failed"; exit 1; fi
 ```
 
-### 4. Push Artifact to Nexus Repository
+### 5. Push Artifact to Nexus Repository
 1. pom.xml 
 2. settings.xml
 ```
@@ -111,7 +120,7 @@ nexus-push:
     MAVEN_PASSWORD: $MAVEN_PASSWORD
 ```
 
-### 5. Build Docker Image
+### 6. Build Docker Image
 ```
 docker_build:
   stage: docker
@@ -124,7 +133,7 @@ docker_build:
     expire_in: 1 hour
 ```
 
-### 6. Trivy Security Scan
+### 7. Trivy Security Scan
 ```
 trivy_scan:
   stage: scan
@@ -142,7 +151,7 @@ trivy_scan:
       - trivy-report.json
 ```
 
-### 7. Push to AWS ECR(Elastic Container Registry)
+### 8. Push to AWS ECR(Elastic Container Registry)
 Create an ECR private repository with name [docker image].
 Use ecr-credential-helper to secure secrets.
 ```
@@ -165,7 +174,7 @@ ecr_push:
     - docker push 088351136602.dkr.ecr.us-east-1.amazonaws.com/$DOCKER_IMAGE:latest
 ```
 
-### 8. Deploy To AWS ECS(Elastic Container Service)
+### 9. Deploy To AWS ECS(Elastic Container Service)
 1. Create a task definition that pulls image from ECR.
 2. Create a ECS service with the created task definition
 3. Force redeploy the ECS service to make it use the latest image.
