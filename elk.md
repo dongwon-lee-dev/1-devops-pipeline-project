@@ -88,7 +88,7 @@ sudo /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kiban
 ```
 sudo /usr/share/kibana/bin/kibana-verification-code
 ```
-- Kibana inital username: elastic
+- Kibana initial username: elastic
 - Get Kibana initial password
 ```
 sudo /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic
