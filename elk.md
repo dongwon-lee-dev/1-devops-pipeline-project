@@ -3,6 +3,7 @@
 [To Home](README.md)
 
 ---
+![ELK](./images/elk.jpg)
 
 ## Table of Contents
 - [1) Install ELK](#1-install-elk)

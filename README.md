@@ -71,6 +71,8 @@ Deploy pipeline using **Jenkins version** or **GitHub Actions version**.
 
 # 4) Set up Log Monitoring - ELK
 
+![ELK](./images/elk.jpg)
+
 ELK (Elasticsearch, Logstash, Kibana)
 - Logstash: Collects, processes, and transforms logs before sending them to Elasticsearch.
 - Elasticsearch: Stores and indexes log data for fast search and analysis.
