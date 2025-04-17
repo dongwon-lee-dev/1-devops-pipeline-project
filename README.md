@@ -13,9 +13,11 @@
   - [Jenkins version](#jenkins-version)
   - [GitHub Actions version](#github-actions-version)
   - [GitLab CI/CD version](#gitlab-cicd-version)
-- [3) Set up Monitoring](#3-set-up-monitoring)
+- [3) Set Up Metrics Monitoring - Prometheus & Grafana](#3-set-up-metrics-monitoring---prometheus--grafana)
   - [ECS Version](#ecs-version)
   - [EC2 Version](#ec2-version)
+- [4) Set up Log Monitoring - ELK](#4-set-up-log-monitoring---elk)
+  - [ELK EC2 Version](#elk-ec2-version)
 
 ---
 ![Project Introduction](./images/project-introduction.jpg)
@@ -57,10 +59,22 @@ Deploy pipeline using **Jenkins version** or **GitHub Actions version**.
 
 ---
 
-# 3) Set up Monitoring
+# 3) Set up Metrics Monitoring - Prometheus & Grafana
 
 ## ECS Version
 [ECS version](ecs-monitoring.md)
 
 ## EC2 Version
 [EC2 version](ec2-monitoring.md)
+
+--- 
+
+# 4) Set up Log Monitoring - ELK
+
+ELK (Elasticsearch, Logstash, Kibana)
+- Logstash: Collects, processes, and transforms logs before sending them to Elasticsearch.
+- Elasticsearch: Stores and indexes log data for fast search and analysis.
+- Kibana: Visualizes data stored in Elasticsearch through dashboards and graphs.
+
+## ELK EC2 Version
+[EC2 version](elk.md)
